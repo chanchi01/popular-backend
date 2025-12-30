@@ -441,13 +441,6 @@ app.put("/pedidos/:id/cerrar", (req, res) => {
   );
 });
 
-app.use(express.static(path.join(__dirname, "../popular-front/dist")));
-
-app.use((req, res) => {
-  res.sendFile(
-    path.join(__dirname, "../popular-front/dist/index.html")
-  );
-});
 
 // ================== START SERVER ==================
 app.listen(PORT, () => {
