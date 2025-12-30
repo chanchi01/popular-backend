@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Barra - Nuevo Pedido</title>
+</head>
+<body>
+
+<h1>🍺 Barra - Nuevo Pedido</h1>
+
+<label>Ubicación:</label>
+<select id="ubicacion">
+  <option value="FR">Frente Barra</option>
+  <option value="SC">Salón Chico</option>
+  <option value="P">Patio</option>
+  <option value="G">Galería</option>
+  <option value="SD">Salón Derecha</option>
+</select>
+
+<br><br>
+
+<label>Personas:</label>
+<input type="number" id="personas" min="1">
+
+<br><br>
+
+<button onclick="enviarPedido()">Enviar pedido</button>
+
+<script>
+function enviarPedido() {
+  fetch('/pedido', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      ubicacion: document.getElementById('ubicacion').value,
+      personas: document.getElementById('personas').value
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert('Pedido enviado. Mesa N° ' + data.numeroMesa);
+  });
+}
+</script>
+
+</body>
+</html>

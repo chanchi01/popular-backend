@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cocina</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<h1>🍳 Cocina</h1>
+
+<div id="pedidos"></div>
+
+<script>
+function cargarPedidos() {
+  fetch('/pedidos')
+    .then(res => res.json())
+    .then(data => {
+      const contenedor = document.getElementById('pedidos');
+      contenedor.innerHTML = '';
+
+      data.forEach(pedido => {
+        const div = document.createElement('div');
+        div.className = 'pedido ' + pedido.estado;
+
+        div.innerHTML = 
+  <div>
+    <h2>MESA ${pedido.numero_mesa}</h2>
+    <p><strong>Ubicación:</strong> ${pedido.ubicacion}</p>
+    <p><strong>Personas:</strong> ${pedido.personas}</p>
+    <p><strong>Estado:</strong> ${pedido.estado.toUpperCase()}</p>
+
+    <button onclick="cambiarEstado(${pedido.id}, 'preparando')">Preparando</button>
+    <button onclick="cambiarEstado(${pedido.id}, 'listo')">Listo</button>
+  </div>
+;
+
+
+        contenedor.appendChild(div);
+      });
+    });
+}
+
+function cambiarEstado(id, estado) {
+  fetch('/pedido/' + id, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ estado })
+  }).then(() => cargarPedidos());
+}
+
+setInterval(cargarPedidos, 2000);
+cargarPedidos();
+</script>
+
+</body>
+</html>
+﻿
